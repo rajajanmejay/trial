@@ -1,0 +1,2105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LHSR – Laboratory for Hypersonic and Shock Wave Research | IISc</title>
+  <meta name="description" content="Laboratory for Hypersonic and Shock Wave Research at IISc Bengaluru. Pioneering research in hypersonic aerodynamics, shock waves, and high-enthalpy flows." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --navy:  #f0f7ff;
+      --navy2: #ffffff;
+      --navy3: #e8f4fd;
+      --blue:  #0077cc;
+      --blue2: #005fa3;
+      --gold:  #c47c00;
+      --white: #0f172a;
+      --muted: #4a6080;
+      --border: rgba(0,119,204,0.18);
+      --card:  rgba(255,255,255,0.9);
+      --glow:  0 4px 24px rgba(0,119,204,0.12);
+      --hero-bg: #0a2540;
+      --hero-text: #f0f7ff;
+      --hero-muted: #93b8d8;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    body {
+      background: var(--navy);
+      color: var(--white);
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── SUBTLE DOT PATTERN ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: radial-gradient(circle, rgba(0,119,204,0.07) 1px, transparent 1px);
+      background-size: 28px 28px;
+      pointer-events: none; z-index: 0;
+    }
+    body::after { display: none; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2.5rem;
+      height: 76px;
+      background: rgba(255,255,255,0.96);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 2px 16px rgba(0,119,204,0.08);
+    }
+
+    .nav-logo {
+      display: flex; align-items: center; gap: 14px;
+      text-decoration: none;
+    }
+    .nav-logo-mark {
+      width: 42px; height: 42px;
+      border: 2px solid var(--blue);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Space Mono', monospace;
+      font-size: 14px; font-weight: bold; color: var(--blue);
+      letter-spacing: 0;
+      background: rgba(0,119,204,0.06);
+    }
+    .nav-logo-text {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700; font-size: 16px;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: #0a2540;
+    }
+    .nav-logo-sub {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px; color: var(--muted);
+      letter-spacing: 0.15em;
+    }
+
+    .nav-links {
+      display: flex; align-items: center; gap: 0.5rem;
+      list-style: none;
+    }
+    .nav-links a {
+      padding: 8px 16px;
+      font-family: 'Space Mono', monospace;
+      font-size: 13px; letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #4a6080;
+      text-decoration: none;
+      border: 1px solid transparent;
+      transition: all 0.2s;
+    }
+    .nav-links a:hover, .nav-links a.active {
+      color: var(--blue);
+      border-color: var(--border);
+      background: rgba(0,119,204,0.07);
+    }
+
+    .nav-hamburger {
+      display: none;
+      flex-direction: column; gap: 5px;
+      cursor: pointer; padding: 8px;
+      background: none; border: none;
+    }
+    .nav-hamburger span {
+      width: 24px; height: 1.5px;
+      background: #0a2540;
+      transition: all 0.3s;
+    }
+
+    /* ── PAGES ── */
+    .page { display: none; min-height: 100vh; position: relative; z-index: 1; }
+    .page.active { display: block; }
+
+    /* ── HERO ── */
+    #page-home {
+      display: none;
+      position: relative;
+      overflow: hidden;
+    }
+    #page-home.active { display: block; }
+
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      justify-content: center;
+      padding: 140px 2.5rem 80px;
+      position: relative;
+      background: linear-gradient(135deg, #0a2540 0%, #0d3460 50%, #1a5276 100%);
+      color: var(--hero-text);
+    }
+
+    .hero-bg-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(120px);
+      pointer-events: none;
+    }
+    .orb1 {
+      width: 600px; height: 600px;
+      top: -150px; right: -150px;
+      background: radial-gradient(circle, rgba(0,150,255,0.22) 0%, transparent 70%);
+    }
+    .orb2 {
+      width: 400px; height: 400px;
+      bottom: 0; left: -100px;
+      background: radial-gradient(circle, rgba(100,200,255,0.12) 0%, transparent 70%);
+    }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 8px 16px;
+      border: 1px solid rgba(100,200,255,0.3);
+      font-family: 'Space Mono', monospace;
+      font-size: 12px; letter-spacing: 0.2em;
+      color: #7dd3fc;
+      text-transform: uppercase;
+      margin-bottom: 2.5rem;
+      width: fit-content;
+      animation: fadeUp 0.8s ease both;
+      background: rgba(255,255,255,0.06);
+    }
+    .hero-badge::before {
+      content: '';
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #7dd3fc;
+      animation: pulse 2s infinite;
+    }
+
+    .hero-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(3rem, 7vw, 6.5rem);
+      line-height: 1;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.5rem;
+      animation: fadeUp 0.8s 0.1s ease both;
+    }
+    .hero-title .line1 { display: block; color: #f0f7ff; }
+    .hero-title .line2 { display: block; color: #7dd3fc; }
+    .hero-title .line3 { display: block; color: #93b8d8; font-size: 0.5em; font-weight: 600; letter-spacing: 0.02em; margin-top: 0.5em; }
+
+    .hero-desc {
+      max-width: 650px;
+      color: #93b8d8;
+      font-size: 1.25rem;
+      margin-bottom: 3rem;
+      animation: fadeUp 0.8s 0.2s ease both;
+    }
+
+    .hero-cta {
+      display: flex; gap: 1.2rem; flex-wrap: wrap;
+      animation: fadeUp 0.8s 0.3s ease both;
+    }
+
+    .btn-primary {
+      padding: 14px 32px;
+      background: var(--blue);
+      color: #ffffff;
+      font-family: 'Space Mono', monospace;
+      font-size: 14px; font-weight: 700;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      border: none; cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .btn-primary:hover { background: var(--blue2); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,119,204,0.3); }
+
+    .btn-outline {
+      padding: 14px 32px;
+      background: transparent;
+      color: #f0f7ff;
+      font-family: 'Space Mono', monospace;
+      font-size: 14px; font-weight: 700;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      border: 1px solid rgba(255,255,255,0.35);
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .btn-outline:hover { border-color: #7dd3fc; color: #7dd3fc; }
+
+    .hero-stats {
+      display: flex; gap: 4rem; flex-wrap: wrap;
+      margin-top: 5rem;
+      padding-top: 3.5rem;
+      border-top: 1px solid rgba(255,255,255,0.15);
+      animation: fadeUp 0.8s 0.4s ease both;
+    }
+    .stat-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 3rem; font-weight: 800;
+      color: #7dd3fc;
+      line-height: 1;
+    }
+    .stat-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 12px; letter-spacing: 0.15em;
+      color: #93b8d8; text-transform: uppercase;
+      margin-top: 8px;
+    }
+
+    /* hero scroll line */
+    .scroll-indicator {
+      position: absolute; bottom: 3rem; left: 50%;
+      transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 10px;
+      font-family: 'Space Mono', monospace;
+      font-size: 11px; letter-spacing: 0.2em;
+      color: #93b8d8; text-transform: uppercase;
+    }
+    .scroll-line {
+      width: 2px; height: 70px;
+      background: linear-gradient(to bottom, #7dd3fc, transparent);
+      animation: scrollAnim 2s ease-in-out infinite;
+    }
+
+    /* ── ABOUT SECTION ── */
+    .about-section {
+      padding: 8rem 2.5rem;
+      max-width: 1200px; margin: 0 auto;
+    }
+
+    .section-tag {
+      font-family: 'Space Mono', monospace;
+      font-size: 13px; letter-spacing: 0.25em;
+      color: var(--blue); text-transform: uppercase;
+      margin-bottom: 1.5rem;
+    }
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2.5rem, 4vw, 3.5rem);
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 2rem;
+      color: #0a2540;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem; align-items: center;
+    }
+    .about-text p {
+      color: var(--muted); margin-bottom: 1.5rem; font-size: 1.15rem;
+    }
+    .about-image {
+      position: relative;
+    }
+    .about-image img {
+      width: 100%; display: block;
+      border: 1px solid var(--border);
+      box-shadow: 0 8px 32px rgba(0,119,204,0.1);
+    }
+    .about-image::before {
+      content: '';
+      position: absolute;
+      inset: -8px -8px 8px 8px;
+      border: 1px solid rgba(0,119,204,0.25);
+      z-index: -1;
+    }
+    .about-image-caption {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px; letter-spacing: 0.15em;
+      color: var(--muted); text-transform: uppercase;
+      margin-top: 16px;
+    }
+
+    /* ── RESEARCH AREAS HOME ── */
+    .research-preview {
+      padding: 6rem 2.5rem;
+      max-width: 1200px; margin: 0 auto;
+    }
+
+    .research-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5px;
+      margin-top: 3rem;
+      background: rgba(0,119,204,0.12);
+    }
+    .research-card {
+      background: #ffffff;
+      padding: 3rem 2.5rem;
+      transition: all 0.3s;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+    }
+    .research-card:hover {
+      background: #f0f7ff;
+      box-shadow: var(--glow);
+      border-bottom-color: var(--blue);
+    }
+    .research-card-num {
+      font-family: 'Space Mono', monospace;
+      font-size: 13px; letter-spacing: 0.2em;
+      color: var(--blue); margin-bottom: 1.5rem;
+    }
+    .research-card-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.5rem; font-weight: 700;
+      margin-bottom: 1rem;
+      color: #0a2540;
+    }
+    .research-card-desc {
+      font-size: 1.05rem; color: var(--muted);
+    }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      padding: 120px 2.5rem 60px;
+      max-width: 1200px; margin: 0 auto;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 0;
+      background: linear-gradient(to bottom, rgba(0,119,204,0.04), transparent);
+    }
+    .page-header-meta {
+      font-family: 'Space Mono', monospace;
+      font-size: 13px; letter-spacing: 0.25em;
+      color: var(--blue); text-transform: uppercase;
+      margin-bottom: 1.5rem;
+    }
+    .page-header h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(3rem, 5vw, 4.5rem);
+      font-weight: 800; line-height: 1.05;
+      color: #0a2540;
+    }
+    .page-header p {
+      color: var(--muted); font-size: 1.2rem;
+      margin-top: 1.5rem;
+      max-width: 650px;
+    }
+
+    /* ── PAGE CONTENT ── */
+    .page-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 5rem 2.5rem 8rem;
+    }
+
+    /* ── PEOPLE PAGE ── */
+    .people-section { margin-bottom: 5rem; }
+    .people-section-header {
+      display: flex; align-items: baseline; gap: 1.5rem;
+      margin-bottom: 2.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid var(--border);
+    }
+    .people-section-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.8rem; font-weight: 700;
+      color: #0a2540;
+    }
+    .people-count {
+      font-family: 'Space Mono', monospace;
+      font-size: 12px; letter-spacing: 0.15em;
+      color: var(--muted); text-transform: uppercase;
+    }
+
+    /* ── PEOPLE GRID ── */
+    .people-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 20px;
+    }
+
+    /* ── PEOPLE CARD — photo-dominant with hover reveal ── */
+    .people-card {
+      background: #ffffff;
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0,60,120,0.08);
+      transition: box-shadow 0.3s, transform 0.3s;
+      cursor: pointer;
+    }
+    .people-card:hover {
+      box-shadow: 0 10px 36px rgba(0,60,120,0.18);
+      transform: translateY(-4px);
+    }
+
+    /* photo wrap holds the image + two overlays */
+    .people-card-photo-wrap {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 3/4;          /* portrait format */
+      overflow: hidden;
+      background: #c8dff0;
+    }
+    .people-card-photo-wrap img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      display: block;
+      transition: transform 0.5s ease;
+    }
+    .people-card:hover .people-card-photo-wrap img {
+      transform: scale(1.05);
+    }
+
+    /* initial name bar — always visible at photo bottom */
+    .people-card-base {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 2.5rem 1.25rem 1rem;
+      background: linear-gradient(to top, rgba(5,25,50,0.85) 0%, transparent 100%);
+      transition: opacity 0.35s ease;
+    }
+    .people-card:hover .people-card-base { opacity: 0; }
+
+    .people-card-base .people-card-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.1rem; font-weight: 700;
+      color: #ffffff; margin: 0;
+    }
+    .people-card-base .people-card-role {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px; letter-spacing: 0.12em;
+      color: #a8d4f0; text-transform: uppercase;
+      margin: 4px 0 0;
+    }
+
+    /* hover overlay — slides up on hover */
+    .people-card-hover {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(5,25,60,0.94) 0%, rgba(5,25,60,0.80) 60%, rgba(5,25,60,0.55) 100%);
+      padding: 1.75rem 1.5rem;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.35s ease, transform 0.35s ease;
+    }
+    .people-card:hover .people-card-hover {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .people-card-hover .people-card-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.15rem; font-weight: 700;
+      color: #ffffff; margin: 0 0 4px;
+    }
+    .people-card-hover .people-card-role {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px; letter-spacing: 0.15em;
+      color: #7dd3fc; text-transform: uppercase;
+      margin: 0 0 12px;
+    }
+    .people-card-hover .people-card-research {
+      font-size: 0.88rem; color: #cce4f7;
+      line-height: 1.55;
+      display: -webkit-box;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+    .people-card-linkedin {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-family: 'Space Mono', monospace;
+      font-size: 10px; letter-spacing: 0.15em;
+      color: #7dd3fc; text-transform: uppercase;
+      text-decoration: none;
+      border: 1px solid rgba(125,211,252,0.4);
+      padding: 5px 10px;
+      transition: all 0.2s;
+      align-self: flex-start;
+      margin-top: 4px;
+    }
+    .people-card-linkedin:hover { background: rgba(125,211,252,0.15); border-color: #7dd3fc; }
+
+    /* placeholder letter when no image */
+    .people-card-photo-wrap.no-image {
+      display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(135deg, #1a4a7a 0%, #2d7abf 100%);
+    }
+    .people-card-photo-wrap.no-image .people-card-letter {
+      font-family: 'Syne', sans-serif;
+      font-size: 5rem; font-weight: 800;
+      color: rgba(255,255,255,0.6);
+    }
+
+    /* ── FACULTY GRID ── */
+    .faculty-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    /* ── FACULTY CARD — larger variant ── */
+    .faculty-card {
+      background: #ffffff;
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0,60,120,0.08);
+      transition: box-shadow 0.3s, transform 0.3s;
+      cursor: pointer;
+    }
+    .faculty-card:hover {
+      box-shadow: 0 12px 40px rgba(0,60,120,0.2);
+      transform: translateY(-5px);
+    }
+
+    .faculty-photo-wrap {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 3/4;
+      overflow: hidden;
+      background: #c8dff0;
+    }
+    .faculty-photo-wrap img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      display: block;
+      transition: transform 0.5s ease;
+    }
+    .faculty-card:hover .faculty-photo-wrap img { transform: scale(1.05); }
+
+    .faculty-card-base {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 3rem 1.5rem 1.25rem;
+      background: linear-gradient(to top, rgba(5,25,50,0.88) 0%, transparent 100%);
+      transition: opacity 0.35s ease;
+    }
+    .faculty-card:hover .faculty-card-base { opacity: 0; }
+
+    .faculty-card-base .faculty-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.2rem; font-weight: 800;
+      color: #ffffff; margin: 0;
+    }
+    .faculty-card-base .faculty-role {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px; letter-spacing: 0.12em;
+      color: #a8d4f0; text-transform: uppercase;
+      margin: 5px 0 0;
+    }
+
+    .faculty-card-hover {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(5,25,60,0.95) 0%, rgba(5,25,60,0.82) 60%, rgba(5,25,60,0.60) 100%);
+      padding: 2rem 1.75rem;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.35s ease, transform 0.35s ease;
+    }
+    .faculty-card:hover .faculty-card-hover {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .faculty-card-hover .faculty-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.25rem; font-weight: 800;
+      color: #ffffff; margin: 0 0 4px;
+    }
+    .faculty-card-hover .faculty-role {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px; letter-spacing: 0.15em;
+      color: #7dd3fc; text-transform: uppercase;
+      margin: 0 0 14px;
+    }
+    .faculty-card-hover .faculty-research {
+      font-size: 0.95rem; color: #cce4f7;
+      line-height: 1.6;
+    }
+
+    .faculty-photo-wrap.no-image {
+      display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(135deg, #0d3460 0%, #1d6fa8 100%);
+    }
+    .faculty-photo-wrap.no-image .faculty-letter {
+      font-family: 'Syne', sans-serif;
+      font-size: 6rem; font-weight: 800;
+      color: rgba(255,255,255,0.5);
+    }
+
+    /* ── OLD HELPERS (kept for compat) ── */
+    .people-card-photo, .faculty-photo { display: none; } /* replaced */
+
+    /* ── FACILITIES PAGE ── */
+    .facility-item {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      background: rgba(0,119,204,0.1);
+      margin-bottom: 1.5px;
+    }
+    .facility-item:nth-child(even) { direction: rtl; }
+    .facility-item:nth-child(even) > * { direction: ltr; }
+
+    .facility-info {
+      background: #ffffff;
+      padding: 4rem;
+    }
+    .facility-tag {
+      font-family: 'Space Mono', monospace;
+      font-size: 12px; letter-spacing: 0.25em;
+      color: var(--blue); text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+    .facility-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 2.2rem; font-weight: 800;
+      margin-bottom: 0.5rem;
+      line-height: 1.1;
+      color: #0a2540;
+    }
+    .facility-subtitle {
+      color: var(--blue2);
+      font-size: 1.1rem;
+      font-style: italic;
+      margin-bottom: 2rem;
+    }
+    .facility-specs {
+      margin-top: 2rem;
+    }
+    .spec-row {
+      display: flex; justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 1rem;
+    }
+    .spec-row:last-child { border-bottom: none; }
+    .spec-key {
+      color: var(--muted);
+      font-family: 'Space Mono', monospace;
+      font-size: 13px; letter-spacing: 0.08em;
+    }
+    .spec-val {
+      color: #0a2540;
+      font-family: 'Space Mono', monospace;
+      font-size: 14px; font-weight: 700;
+    }
+    .mach-badge {
+      display: inline-block;
+      padding: 6px 16px;
+      background: rgba(0,119,204,0.08);
+      border: 1px solid var(--blue);
+      font-family: 'Space Mono', monospace;
+      font-size: 13px; letter-spacing: 0.1em;
+      color: var(--blue);
+      margin-top: 1.5rem;
+    }
+
+    .facility-image {
+      background: #d6eaf8;
+      overflow: hidden;
+      min-height: 350px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .facility-image img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+      display: block;
+    }
+    .facility-item:hover .facility-image img { transform: scale(1.03); }
+
+    .facility-image-placeholder {
+      font-family: 'Space Mono', monospace;
+      font-size: 12px; letter-spacing: 0.2em;
+      color: var(--muted); text-transform: uppercase;
+    }
+
+    /* ── RESEARCH PAGE ── */
+    .research-areas {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5px;
+      background: rgba(0,119,204,0.1);
+    }
+    .research-area-card {
+      background: #ffffff;
+      padding: 4rem;
+      transition: background 0.3s;
+    }
+    .research-area-card:hover { background: #f0f7ff; }
+    .research-area-card:first-child {
+      grid-column: 1 / -1;
+      background: #e8f4fd;
+    }
+    .research-icon {
+      font-size: 3rem;
+      margin-bottom: 2rem;
+    }
+    .research-area-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.8rem; font-weight: 800;
+      margin-bottom: 1.5rem;
+      color: #0a2540;
+    }
+    .research-area-desc {
+      color: var(--muted);
+      font-size: 1.1rem;
+      line-height: 1.8;
+    }
+    .research-tags {
+      display: flex; flex-wrap: wrap; gap: 10px;
+      margin-top: 2rem;
+    }
+    .research-tag {
+      padding: 6px 14px;
+      border: 1px solid var(--border);
+      background: rgba(0,119,204,0.05);
+      font-family: 'Space Mono', monospace;
+      font-size: 11px; letter-spacing: 0.1em;
+      color: var(--blue); text-transform: uppercase;
+    }
+
+    /* ── PUBLICATIONS PAGE ── */
+    .pub-coming-soon {
+      text-align: center;
+      padding: 8rem 2rem;
+    }
+    .pub-coming-soon .big-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 10rem; font-weight: 800;
+      color: rgba(0,119,204,0.07);
+      line-height: 1;
+    }
+    .pub-coming-soon p {
+      color: var(--muted);
+      font-family: 'Space Mono', monospace;
+      font-size: 14px; letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    /* ── OPPORTUNITIES PAGE ── */
+    .opp-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5px;
+      background: rgba(0,119,204,0.1);
+      margin-bottom: 5rem;
+    }
+    .opp-card {
+      background: #ffffff;
+      padding: 3rem;
+      transition: background 0.3s, box-shadow 0.3s;
+      border-top: 3px solid transparent;
+    }
+    .opp-card:hover { background: #f0f7ff; border-top-color: var(--blue); box-shadow: var(--glow); }
+    .opp-icon {
+      font-size: 2.5rem; margin-bottom: 2rem;
+    }
+    .opp-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.5rem; font-weight: 700;
+      margin-bottom: 1.2rem;
+      color: #0a2540;
+    }
+    .opp-desc { color: var(--muted); font-size: 1.05rem; }
+
+    .requirements-box {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--blue);
+      padding: 4rem;
+      margin-bottom: 3rem;
+      box-shadow: 0 2px 16px rgba(0,119,204,0.06);
+    }
+    .req-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.6rem; font-weight: 700;
+      margin-bottom: 2rem;
+      color: #0a2540;
+    }
+    .req-list {
+      list-style: none;
+    }
+    .req-list li {
+      display: flex; gap: 1.5rem;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 1.1rem;
+      color: var(--muted);
+    }
+    .req-list li::before {
+      content: '→';
+      color: var(--blue);
+      font-family: 'Space Mono', monospace;
+      flex-shrink: 0;
+    }
+
+    /* ── GALLERY PAGE ── */
+    .gallery-tabs {
+      display: flex; gap: 0;
+      margin-bottom: 3rem;
+      border: 1px solid var(--border);
+      width: fit-content;
+      background: #ffffff;
+    }
+    .gallery-tab {
+      padding: 12px 28px;
+      font-family: 'Space Mono', monospace;
+      font-size: 12px; letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      cursor: pointer;
+      border: none;
+      background: none;
+      transition: all 0.2s;
+      border-right: 1px solid var(--border);
+    }
+    .gallery-tab:last-child { border-right: none; }
+    .gallery-tab.active, .gallery-tab:hover {
+      color: #ffffff;
+      background: var(--blue);
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 3px;
+      background: rgba(0,119,204,0.1);
+    }
+    .gallery-item {
+      aspect-ratio: 1;
+      overflow: hidden;
+      background: #d6eaf8;
+      cursor: pointer;
+      position: relative;
+    }
+    .gallery-item img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+      display: block;
+    }
+    .gallery-item:hover img { transform: scale(1.1); }
+    .gallery-item-overlay {
+      position: absolute; inset: 0;
+      background: rgba(10,37,64,0.65);
+      display: flex; align-items: flex-end;
+      padding: 1.5rem;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .gallery-item:hover .gallery-item-overlay { opacity: 1; }
+    .gallery-item-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px; letter-spacing: 0.15em;
+      color: #7dd3fc; text-transform: uppercase;
+    }
+
+    /* ── CONTACT PAGE ── */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5px;
+      background: rgba(0,119,204,0.1);
+    }
+    .contact-info {
+      background: #ffffff;
+      padding: 4rem;
+    }
+    .contact-form-wrap {
+      background: #f0f7ff;
+      padding: 4rem;
+    }
+    .contact-item {
+      margin-bottom: 2.5rem;
+    }
+    .contact-item-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 12px; letter-spacing: 0.2em;
+      color: var(--blue); text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .contact-item-val {
+      font-size: 1.1rem;
+      color: #0a2540;
+      line-height: 1.8;
+    }
+    .contact-item-val a {
+      color: var(--blue);
+      text-decoration: none;
+      border-bottom: 1px solid var(--border);
+    }
+    .contact-item-val a:hover { color: var(--blue2); border-color: var(--blue2); }
+
+    .form-group {
+      margin-bottom: 2rem;
+    }
+    .form-label {
+      display: block;
+      font-family: 'Space Mono', monospace;
+      font-size: 11px; letter-spacing: 0.15em;
+      color: var(--muted); text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .form-input, .form-textarea {
+      width: 100%;
+      background: #ffffff;
+      border: 1px solid rgba(0,119,204,0.25);
+      color: #0a2540;
+      padding: 14px 20px;
+      font-family: 'Inter', sans-serif;
+      font-size: 1.05rem;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .form-input:focus, .form-textarea:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(0,119,204,0.1);
+    }
+    .form-input::placeholder, .form-textarea::placeholder { color: #94a3b8; }
+    .form-textarea { min-height: 160px; resize: vertical; }
+
+    /* ── MAP EMBED ── */
+    .map-section {
+      margin-top: 1.5px;
+    }
+    .map-wrap {
+      background: #ffffff;
+      padding: 2.5rem;
+      border: 1px solid var(--border);
+    }
+    .map-iframe {
+      width: 100%; height: 400px;
+      border: 1px solid var(--border);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 2px solid var(--border);
+      background: #0a2540;
+      padding: 4rem 2.5rem;
+      display: flex;
+      align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 1.5rem;
+      position: relative; z-index: 1;
+    }
+    .footer-logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800; font-size: 1.5rem;
+      color: #f0f7ff;
+    }
+    .footer-logo span { color: #7dd3fc; }
+    .footer-links {
+      display: flex; gap: 2.5rem;
+      list-style: none;
+    }
+    .footer-links a {
+      font-family: 'Space Mono', monospace;
+      font-size: 12px; letter-spacing: 0.1em;
+      color: #93b8d8; text-transform: uppercase;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: #7dd3fc; }
+    .footer-copy {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px; letter-spacing: 0.1em;
+      color: #4a7090;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+    @keyframes scrollAnim {
+      0%, 100% { opacity: 0.3; transform: scaleY(1); }
+      50% { opacity: 1; transform: scaleY(1.2); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .nav-links { display: none; }
+      .nav-links.open {
+        display: flex; flex-direction: column;
+        position: fixed; top: 76px; left: 0; right: 0;
+        background: #ffffff;
+        padding: 2rem;
+        border-bottom: 1px solid var(--border);
+        box-shadow: 0 8px 24px rgba(0,119,204,0.1);
+        gap: 1rem;
+        z-index: 999;
+      }
+      .nav-links.open a { color: #0a2540; }
+      .nav-hamburger { display: flex; }
+      .about-grid, .contact-grid, .facility-item { grid-template-columns: 1fr; direction: ltr; }
+      .research-areas { grid-template-columns: 1fr; }
+      .research-areas .research-area-card:first-child { grid-column: 1; }
+      .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+      .opp-grid { grid-template-columns: 1fr; }
+      .research-grid { grid-template-columns: 1fr; }
+      .hero-stats { gap: 2.5rem; }
+    }
+
+    @media (max-width: 600px) {
+      .page-header { padding: 100px 1.5rem 50px; }
+      .page-content { padding: 3rem 1.5rem 6rem; }
+      .hero { padding: 120px 1.5rem 70px; }
+      nav { padding: 0 1.5rem; }
+      .faculty-grid { grid-template-columns: 1fr; }
+      .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    /* btn-outline used on light bg (about section) */
+    .about-section .btn-outline,
+    .btn-outline-light {
+      color: var(--blue);
+      border-color: var(--blue);
+      background: transparent;
+    }
+    .about-section .btn-outline:hover,
+    .btn-outline-light:hover { background: rgba(0,119,204,0.06); color: var(--blue2); }
+
+    /* Opportunities contact btn on light bg */
+    #page-opportunities .btn-primary { background: var(--blue); color: #fff; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="#" onclick="showPage('home')">
+    <div class="nav-logo-mark">LHSR</div>
+    <div>
+      <div class="nav-logo-text">Hypersonic Lab</div>
+      <div class="nav-logo-sub">IISc Bengaluru</div>
+    </div>
+  </a>
+
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#" onclick="showPage('research')" data-page="research">Research</a></li>
+    <li><a href="#" onclick="showPage('facilities')" data-page="facilities">Facilities</a></li>
+    <li><a href="#" onclick="showPage('people')" data-page="people">People</a></li>
+    <li><a href="#" onclick="showPage('publications')" data-page="publications">Publications</a></li>
+    <li><a href="#" onclick="showPage('gallery')" data-page="gallery">Gallery</a></li>
+    <li><a href="#" onclick="showPage('opportunities')" data-page="opportunities">Opportunities</a></li>
+    <li><a href="#" onclick="showPage('contact')" data-page="contact">Contact</a></li>
+  </ul>
+
+  <button class="nav-hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="page active" id="page-home">
+
+  <section class="hero">
+    <div class="hero-bg-orb orb1"></div>
+    <div class="hero-bg-orb orb2"></div>
+
+    <div class="hero-badge">India's Premier Hypersonic Research Facility</div>
+
+    <h1 class="hero-title">
+      <span class="line1">Laboratory for</span>
+      <span class="line2">Hypersonic &<br>Shock Wave</span>
+      <span class="line3">Research — IISc Bengaluru</span>
+    </h1>
+
+    <p class="hero-desc">
+      Pushing the boundaries of high-speed flight science. 
+      LHSR operates India's most comprehensive suite of hypersonic shock tunnels, 
+      advancing aerospace research from Mach 4 to Mach 12 and specific enthalpy from 0.3 MJ/kg to 10 MJ/kg.
+    </p>
+
+    <div class="hero-cta">
+      <a href="#" class="btn-primary" onclick="showPage('facilities')">Explore Facilities</a>
+      <a href="#" class="btn-outline" onclick="showPage('research')">Our Research</a>
+    </div>
+
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-num">5+</div>
+        <div class="stat-label">Shock Tunnels</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">M12</div>
+        <div class="stat-label">Max Mach Number</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">10</div>
+        <div class="stat-label">MJ/kg Peak Enthalpy</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">30+</div>
+        <div class="stat-label">Lab Members</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">1971</div>
+        <div class="stat-label">India's First HST</div>
+      </div>
+    </div>
+
+    <div class="scroll-indicator">
+      <div class="scroll-line"></div>
+      <span>Scroll</span>
+    </div>
+  </section>
+
+  <section class="about-section">
+    <div class="about-grid">
+      <div class="about-text">
+        <div class="section-tag">About the Lab</div>
+        <h2 class="section-title">Decades of Hypersonic Excellence</h2>
+        <p>The Laboratory for Hypersonic and Shock Wave Research (LHSR) at the Indian Institute of Science (IISc), Bengaluru is a world-leading research facility dedicated to the study of high-speed flows, shock waves, and hypersonic aerodynamics.</p>
+        <p>Home to India's first hypersonic shock tunnel, LHSR has been at the forefront of aerospace research for decades. Our facilities enable ground-testing of vehicles designed to fly faster than Mach 5 — bridging the gap between computational models and real flight conditions.</p>
+        <p>Our interdisciplinary team of faculty, research scientists, and students work on fundamental and applied problems spanning aerodynamic design, combustion chemistry, plasma physics, and materials under extreme conditions.</p>
+        <a href="#" class="btn-outline" onclick="showPage('research')" style="margin-top:1.5rem; display:inline-block;">Explore Research →</a>
+      </div>
+      <div class="about-image">
+        <img src="./images/L1.jpg" alt="LHSR Building" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22400%22><rect fill=%22%23d6eaf8%22 width=%22600%22 height=%22400%22/><text x=%22300%22 y=%22200%22 fill=%22%234a6080%22 text-anchor=%22middle%22 font-family=%22monospace%22 font-size=%2212%22>LABORATORY BUILDING</text></svg>'" />
+        <img src="./images/L2.jpg" alt="LHSR Inside View" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22400%22><rect fill=%22%23d6eaf8%22 width=%22600%22 height=%22400%22/><text x=%22300%22 y=%22200%22 fill=%22%234a6080%22 text-anchor=%22middle%22 font-family=%22monospace%22 font-size=%2212%22>LABORATORY BUILDING</text></svg>'" />
+        <div class="about-image-caption">// Laboratory for Hypersonic and Shock Wave Research — IISc, Bengaluru</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="research-preview">
+    <div class="section-tag">Research Focus</div>
+    <h2 class="section-title">Core Research Areas</h2>
+    <div class="research-grid">
+      <div class="research-card" onclick="showPage('research')">
+        <div class="research-card-num">01 //</div>
+        <div class="research-card-title">Hypersonic Aerodynamics</div>
+        <div class="research-card-desc">
+          Experimental and computational studies on hypersonic flows, including shock–boundary layer interactions, aerodynamic heating, and high-speed inlet design.
+        </div>
+      </div>
+      
+      <div class="research-card" onclick="showPage('research')">
+        <div class="research-card-num">02 //</div>
+        <div class="research-card-title">Hypersonic Aeroelasticity</div>
+        <div class="research-card-desc">
+          Fluid–structure interactions in high-speed flows, including panel flutter, shock-induced deformation, and aero-thermo-elastic coupling.
+        </div>
+      </div>
+      
+      <div class="research-card" onclick="showPage('research')">
+        <div class="research-card-num">03 //</div>
+        <div class="research-card-title">High-Enthalpy Flows</div>
+        <div class="research-card-desc">
+          Real-gas effects, thermal non-equilibrium, dissociation, ionization, and radiation in hypersonic and re-entry environments.
+        </div>
+      </div>
+      
+      <div class="research-card" onclick="showPage('research')">
+        <div class="research-card-num">04 //</div>
+        <div class="research-card-title">Shockwave Physics</div>
+        <div class="research-card-desc">
+          Fundamental studies of shock wave generation, propagation, reflection, and interaction with boundary layers, structures, and materials.
+        </div>
+      </div>
+      
+      <div class="research-card" onclick="showPage('research')">
+        <div class="research-card-num">05 //</div>
+        <div class="research-card-title">High Temperature Chemical Kinetics</div>
+        <div class="research-card-desc">
+          High-temperature reaction kinetics using shock tubes, including ignition delay measurements, spectroscopy, and non-equilibrium chemistry.
+        </div>
+      </div>
+      
+      <div class="research-card" onclick="showPage('research')">
+        <div class="research-card-num">06 //</div>
+        <div class="research-card-title">Biological Engineering</div>
+        <div class="research-card-desc">
+          Shock-wave-based biomedical and bioengineering applications, including cell manipulation, medical therapies, and biological flow studies.
+        </div>
+      </div>
+      
+      <div class="research-card" onclick="showPage('research')">
+        <div class="research-card-num">07 //</div>
+        <div class="research-card-title">Materials</div>
+        <div class="research-card-desc">
+          Behavior of materials under extreme thermal and shock loading, including thermal protection systems and high-temperature material characterization.
+        </div>
+      </div>
+      
+      <div class="research-card" onclick="showPage('research')">
+        <div class="research-card-num">08 //</div>
+        <div class="research-card-title">Blast-wave Physics</div>
+        <div class="research-card-desc">
+          Explosion dynamics, blast wave propagation, and interaction with structures, fluids, and biological systems.
+        </div>
+      </div>
+      
+      <div class="research-card" onclick="showPage('research')">
+        <div class="research-card-num">09 //</div>
+        <div class="research-card-title">Industrial Applications</div>
+        <div class="research-card-desc">
+          Applications of shock and high-speed flow physics in aerospace, energy systems, defense technologies, and industrial processes.
+        </div>
+      </div>
+</div>
+    </div>
+  </section>
+
+  <footer>
+    <div>
+      <div class="footer-logo">LH<span>SR</span></div>
+      <div style="font-family:Space Mono,monospace;font-size:11px;color:var(--muted);letter-spacing:0.1em;margin-top:8px;">LABORATORY FOR HYPERSONIC AND SHOCK WAVE RESEARCH</div>
+    </div>
+    <ul class="footer-links">
+      <li><a href="#" onclick="showPage('research')">Research</a></li>
+      <li><a href="#" onclick="showPage('people')">People</a></li>
+      <li><a href="#" onclick="showPage('contact')">Contact</a></li>
+    </ul>
+    <div class="footer-copy">© 2025 LHSR, IISc Bengaluru. All rights reserved.</div>
+  </footer>
+</div>
+
+<div class="page" id="page-research">
+  <div class="page-header">
+    <div class="page-header-meta">// Research</div>
+    <h1>What We Study</h1>
+    <p>Fundamental and applied research at the intersection of high-speed aerodynamics, shock physics, and aerospace engineering.</p>
+  </div>
+  <div class="page-content">
+    <div class="research-areas">
+      <div class="research-area-card">
+        <div class="research-icon">🚀</div>
+        <div class="research-area-title">Hypersonic Aerodynamics & Propulsion</div>
+        <div class="research-area-desc">
+          Our flagship research area covers the aerodynamics of vehicles traveling at speeds exceeding Mach 5. We investigate shock-boundary layer interactions, aerodynamic heating, hypersonic intake design, scramjet propulsion, and the aerodynamic performance of re-entry vehicles. We use our world-class shock tunnels to replicate high-altitude, high-speed flight conditions in the laboratory.
+        </div>
+        <div class="research-tags">
+          <span class="research-tag">SBLI</span>
+          <span class="research-tag">Scramjet Intakes</span>
+          <span class="research-tag">Aerodynamic Heating</span>
+          <span class="research-tag">Re-entry Vehicles</span>
+          <span class="research-tag">Hypersonic Cruise</span>
+          <span class="research-tag">Air-breathing Propulsion</span>
+        </div>
+      </div>
+
+      <div class="research-area-card">
+        <div class="research-icon">💥</div>
+        <div class="research-area-title">Shock Wave Physics</div>
+        <div class="research-area-desc">
+          We study the generation, propagation, reflection, and interaction of shock waves in various media. This spans from classical gas dynamics to shock-induced phase transitions and focusing. Applications include industrial shock processing, medical shock-wave therapy, and fundamental gasdynamic research.
+        </div>
+        <div class="research-tags">
+          <span class="research-tag">Shock Reflection</span>
+          <span class="research-tag">Shock-Shock Interaction</span>
+          <span class="research-tag">Shock Focusing</span>
+          <span class="research-tag">Condensed Matter</span>
+        </div>
+      </div>
+
+      <div class="research-area-card">
+        <div class="research-icon">🔬</div>
+        <div class="research-area-title">Chemical Kinetics & Combustion</div>
+        <div class="research-area-desc">
+          High-temperature chemical kinetics is central to understanding combustion in supersonic flows. We investigate reaction rates, ignition delays, and species evolution using shock tubes and flow reactors, with spectroscopic diagnostics providing real-time chemical state measurements.
+        </div>
+        <div class="research-tags">
+          <span class="research-tag">Chemical Kinetics</span>
+          <span class="research-tag">Spectroscopy</span>
+          <span class="research-tag">Supersonic Combustion</span>
+          <span class="research-tag">Flow Reactor</span>
+        </div>
+      </div>
+
+      <div class="research-area-card">
+        <div class="research-icon">🌊</div>
+        <div class="research-area-title">Compressible Flow & Mixing</div>
+        <div class="research-area-desc">
+          Understanding mixing in compressible and supersonic flows is critical for scramjet combustor performance. We study compressible mixing layers, supersonic jet injection, and large eddy simulations to understand and enhance mixing in high-speed flows.
+        </div>
+        <div class="research-tags">
+          <span class="research-tag">Compressible Mixing Layer</span>
+          <span class="research-tag">Supersonic Jets</span>
+          <span class="research-tag">LES</span>
+          <span class="research-tag">Mixing Enhancement</span>
+        </div>
+      </div>
+
+      <div class="research-area-card">
+        <div class="research-icon">🦅</div>
+        <div class="research-area-title">Bio-inspired Aerodynamics</div>
+        <div class="research-area-desc">
+          Nature has evolved elegant solutions to fluid dynamic challenges over millions of years. We investigate bio-inspired concepts — from bird wing geometry to riblet surfaces — for application in drag reduction, flow control, and novel aerodynamic configurations.
+        </div>
+        <div class="research-tags">
+          <span class="research-tag">Drag Reduction</span>
+          <span class="research-tag">Flow Control</span>
+          <span class="research-tag">Riblets</span>
+          <span class="research-tag">Biomimetics</span>
+        </div>
+      </div>
+
+      <div class="research-area-card">
+        <div class="research-icon">🔩</div>
+        <div class="research-area-title">Materials Under Extreme Conditions</div>
+        <div class="research-area-desc">
+          Vehicles operating at hypersonic speeds face extreme thermal and mechanical loads. We study the deformation of metals under shock loading, develop and characterize thermal barrier coatings for scramjet applications, and investigate material failure under high strain rates.
+        </div>
+        <div class="research-tags">
+          <span class="research-tag">Thermal Barrier Coatings</span>
+          <span class="research-tag">HCP Metals</span>
+          <span class="research-tag">Shock Loading</span>
+          <span class="research-tag">High Strain Rate</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <div class="footer-logo">LH<span style="color:var(--blue)">SR</span></div>
+    <ul class="footer-links">
+      <li><a href="#" onclick="showPage('home')">Home</a></li>
+      <li><a href="#" onclick="showPage('contact')">Contact</a></li>
+    </ul>
+    <div class="footer-copy">© 2025 LHSR, IISc Bengaluru</div>
+  </footer>
+</div>
+
+<div class="page" id="page-facilities">
+  <div class="page-header">
+    <div class="page-header-meta">// Facilities</div>
+    <h1>World-Class<br>Testing Infrastructure</h1>
+    <p>A unique suite of hypersonic shock tunnels, chemical shock tubes, and specialized equipment — the most comprehensive hypersonic research facility in India.</p>
+  </div>
+  <div class="page-content">
+
+    <div class="facility-item">
+      <div class="facility-info">
+        <div class="facility-tag">Hypersonic Shock Tunnel // HST-1</div>
+        <div class="facility-name">Hypersonic Shock Tunnel 1</div>
+        <div class="facility-subtitle">India's First Hypersonic Shock Tunnel (Legacy tunnel, currently not operational)</div>
+        <div class="facility-specs">
+          <div class="spec-row"><span class="spec-key">Driver Section</span><span class="spec-val">2 m</span></div>
+          <div class="spec-row"><span class="spec-key">Driven Section</span><span class="spec-val">5 m</span></div>
+          <div class="spec-row"><span class="spec-key">Internal Diameter</span><span class="spec-val">50 mm</span></div>
+          <div class="spec-row"><span class="spec-key">External Diameter</span><span class="spec-val">101 mm</span></div>
+          <div class="spec-row"><span class="spec-key">Test Section</span><span class="spec-val">300 × 300 × 450 mm</span></div>
+        </div>
+        <div class="mach-badge">Mach 4 — 13</div>
+      </div>
+      <div class="facility-image">
+        <img src="./images/HST1.jpg" alt="HST1" onerror="this.style.display='none';this.parentNode.querySelector('.facility-image-placeholder').style.display='block'" />
+        <div class="facility-image-placeholder" style="display:none">[ HST1.jpg ]</div>
+      </div>
+    </div>
+
+    <div class="facility-item">
+      <div class="facility-info">
+        <div class="facility-tag">Hypersonic Shock Tunnel // HST-2</div>
+        <div class="facility-name">Hypersonic Shock Tunnel 2</div>
+        <div class="facility-subtitle"></div>
+        <div class="facility-specs">
+          <div class="spec-row"><span class="spec-key">Driver Section</span><span class="spec-val">2 m</span></div>
+          <div class="spec-row"><span class="spec-key">Driven Section</span><span class="spec-val">5.12 m</span></div>
+          <div class="spec-row"><span class="spec-key">Internal Diameter</span><span class="spec-val">50 mm</span></div>
+          <div class="spec-row"><span class="spec-key">External Diameter</span><span class="spec-val">75 mm</span></div>
+          <div class="spec-row"><span class="spec-key">Test Section</span><span class="spec-val">300 × 300 × 450 mm</span></div>
+          <div class="spec-row"><span class="spec-key">Max Enthalpy</span><span class="spec-val">0.7 – 3 MJ/kg</span></div>
+          <div class="spec-row"><span class="spec-key">Reynolds No. Range</span><span class="spec-val">1 – 2 million/m</span></div>
+        </div>
+        <div class="mach-badge">Mach 5.75 — 12</div>
+      </div>
+      <div class="facility-image">
+        <img src="./images/HST2.jpg" alt="HST2" onerror="this.style.display='none'" />
+        <div class="facility-image-placeholder" style="display:none">[ HST2.jpg ]</div>
+      </div>
+    </div>
+
+    <div class="facility-item">
+      <div class="facility-info">
+        <div class="facility-tag">Hypersonic Shock Tunnel // HST-3</div>
+        <div class="facility-name">Hypersonic Shock Tunnel 3</div>
+        <div class="facility-subtitle">Free Piston Shock Tube</div>
+        <div class="facility-specs">
+          <div class="spec-row"><span class="spec-key">Reservoir Length</span><span class="spec-val">1.3 m</span></div>
+          <div class="spec-row"><span class="spec-key">Compression Tube</span><span class="spec-val">10 m</span></div>
+          <div class="spec-row"><span class="spec-key">Driven Tube</span><span class="spec-val">4.5 m</span></div>
+          <div class="spec-row"><span class="spec-key">Piston Mass</span><span class="spec-val">20 – 30 kg</span></div>
+          <div class="spec-row"><span class="spec-key">Compression Ratio</span><span class="spec-val">60</span></div>
+          <div class="spec-row"><span class="spec-key">Test Section</span><span class="spec-val">300 × 300 × 450 mm</span></div>
+          <div class="spec-row"><span class="spec-key">Max Enthalpy</span><span class="spec-val">3 – 25 MJ/kg</span></div>
+          <div class="spec-row"><span class="spec-key">Reynolds No. Range</span><span class="spec-val">1 – 2 million/m</span></div>
+        </div>
+        <div class="mach-badge">Mach 6 — 12</div>
+      </div>
+      <div class="facility-image">
+        <img src="./images/HST3.jpg" alt="HST3" onerror="this.style.display='none'" />
+        <div class="facility-image-placeholder" style="display:none">[ HST3.jpg ]</div>
+      </div>
+    </div>
+
+    <div class="facility-item">
+      <div class="facility-info">
+        <div class="facility-tag">Hypersonic Shock Tunnel // HST-4</div>
+        <div class="facility-name">Hypersonic Shock Tunnel 4</div>
+        <div class="facility-subtitle">Large-Scale Test Section</div>
+        <div class="facility-specs">
+          <div class="spec-row"><span class="spec-key">Driver Section</span><span class="spec-val">2 m</span></div>
+          <div class="spec-row"><span class="spec-key">Driven Section</span><span class="spec-val">10 m</span></div>
+          <div class="spec-row"><span class="spec-key">Internal Diameter</span><span class="spec-val">165 mm</span></div>
+          <div class="spec-row"><span class="spec-key">External Diameter</span><span class="spec-val">200 mm</span></div>
+          <div class="spec-row"><span class="spec-key">Test Section</span><span class="spec-val">1 × 1 × 2.85 m</span></div>
+          <div class="spec-row"><span class="spec-key">Max Enthalpy</span><span class="spec-val">8 MJ/kg</span></div>
+          <div class="spec-row"><span class="spec-key">Reynolds No. Range</span><span class="spec-val">1 – 2 million/m</span></div>
+        </div>
+        <div class="mach-badge">Mach 6 — 15</div>
+      </div>
+      <div class="facility-image">
+        <img src="./images/HST4.jpg" alt="HST4" onerror="this.style.display='none'" />
+        <div class="facility-image-placeholder" style="display:none">[ HST4.jpg ]</div>
+      </div>
+    </div>
+
+    <div class="facility-item">
+      <div class="facility-info">
+        <div class="facility-tag">Hypersonic Shock Tunnel // HST-5</div>
+        <div class="facility-name">Hypersonic Shock Tunnel 5</div>
+        <div class="facility-subtitle">Combustion Driven</div>
+        <div class="facility-specs">
+          <div class="spec-row"><span class="spec-key">Driver Section</span><span class="spec-val">3 m</span></div>
+          <div class="spec-row"><span class="spec-key">Driven Section</span><span class="spec-val">4.7 m</span></div>
+          <div class="spec-row"><span class="spec-key">Internal Diameter</span><span class="spec-val">102 mm</span></div>
+          <div class="spec-row"><span class="spec-key">External Diameter</span><span class="spec-val">130 mm</span></div>
+          <div class="spec-row"><span class="spec-key">Max Enthalpy</span><span class="spec-val">2 – 10 MJ/kg</span></div>
+          <div class="spec-row"><span class="spec-key">Reynolds No. Range</span><span class="spec-val">1 – 2 million/m</span></div>
+        </div>
+        <div class="mach-badge">Mach 6 — 13</div>
+        <p style="font-size:0.95rem;color:var(--muted);margin-top:1.5rem;">4 circumferential spark plugs 2 cm upstream of diaphragm station for combustion driving mode.</p>
+      </div>
+      <div class="facility-image">
+        <img src="./images/HST5.jpg" alt="HST5" onerror="this.style.display='none'" />
+        <div class="facility-image-placeholder" style="display:none">[ HST5.jpg ]</div>
+      </div>
+    </div>
+
+    <div class="facility-item">
+      <div class="facility-info">
+        <div class="facility-tag">Chemical Shock Tube // CST-1</div>
+        <div class="facility-name">Chemical Shock Tunnel 1</div>
+        <div class="facility-subtitle"></div>
+        <div class="facility-specs">
+          <div class="spec-row"><span class="spec-key">Driver Section</span><span class="spec-val">1.8 m</span></div>
+          <div class="spec-row"><span class="spec-key">Driven Section</span><span class="spec-val">3.3 m</span></div>
+          <div class="spec-row"><span class="spec-key">Internal Diameter</span><span class="spec-val">50.8 mm</span></div>
+          <div class="spec-row"><span class="spec-key">External Diameter</span><span class="spec-val">100 mm</span></div>
+          <div class="spec-row"><span class="spec-key">Test Section</span><span class="spec-val">0.4 m</span></div>
+        </div>
+      </div>
+      <div class="facility-image">
+        <img src="./images/CST1.jpg" alt="CST1" onerror="this.style.display='none'" />
+        <div class="facility-image-placeholder" style="display:none">[ CST1.jpg ]</div>
+      </div>
+    </div>
+
+    <div class="facility-item">
+      <div class="facility-info">
+        <div class="facility-tag">Chemical Shock Tube // CST-3</div>
+        <div class="facility-name">Chemical Shock Tunnel 3</div>
+        <div class="facility-subtitle"></div>
+        <div class="facility-specs">
+          <div class="spec-row"><span class="spec-key">Driver Section</span><span class="spec-val">3.6 m</span></div>
+          <div class="spec-row"><span class="spec-key">Driven Section</span><span class="spec-val">7.6 m</span></div>
+          <div class="spec-row"><span class="spec-key">Internal Diameter</span><span class="spec-val">54 mm</span></div>
+          <div class="spec-row"><span class="spec-key">External Diameter</span><span class="spec-val">100 mm</span></div>
+          <div class="spec-row"><span class="spec-key">Test Section</span><span class="spec-val">0.5 m</span></div>
+        </div>
+      </div>
+      <div class="facility-image">
+        <img src="./images/CST3.jpg" alt="CST3" onerror="this.style.display='none'" />
+        <div class="facility-image-placeholder" style="display:none">[ CST3.jpg ]</div>
+      </div>
+    </div>
+
+    <div class="facility-item">
+      <div class="facility-info">
+        <div class="facility-tag">Vertical Shock Tube // VST</div>
+        <div class="facility-name">Vertical Shock Tube (VST)</div>
+        <div class="facility-subtitle"></div>
+        <div class="facility-specs">
+          <div class="spec-row"><span class="spec-key">Driver Section</span><span class="spec-val">1.5 m</span></div>
+          <div class="spec-row"><span class="spec-key">Driven Section</span><span class="spec-val">4.3 m</span></div>
+          <div class="spec-row"><span class="spec-key">Internal Diameter</span><span class="spec-val">136 mm</span></div>
+          <div class="spec-row"><span class="spec-key">External Diameter</span><span class="spec-val">168 mm</span></div>
+          <div class="spec-row"><span class="spec-key">Shock Pressure</span><span class="spec-val">100 bar</span></div>
+          <div class="spec-row"><span class="spec-key">Test Section</span><span class="spec-val">870 × 150 × 500 mm</span></div>
+          <div class="spec-row"><span class="spec-key">Decay Time</span><span class="spec-val">1.6 – 20 ms</span></div>
+        </div>
+      </div>
+      <div class="facility-image">
+        <img src="./images/VST1.jpg" alt="VST" onerror="this.style.display='none'" />
+        <div class="facility-image-placeholder" style="display:none">[ VST1.jpg ]</div>
+      </div>
+    </div>
+
+    <div class="facility-item">
+      <div class="facility-info">
+        <div class="facility-tag">Compact Tunnel // RT</div>
+        <div class="facility-name">Reddy Tunnel</div>
+        <div class="facility-subtitle">Compact Hypersonic Tunnel</div>
+        <div class="facility-specs">
+          <div class="spec-row"><span class="spec-key">Driver Section</span><span class="spec-val">0.4 m</span></div>
+          <div class="spec-row"><span class="spec-key">Driven Section</span><span class="spec-val">0.6 m</span></div>
+          <div class="spec-row"><span class="spec-key">Internal Diameter</span><span class="spec-val">29 mm</span></div>
+          <div class="spec-row"><span class="spec-key">Test Section</span><span class="spec-val">up to 50 mm (crosswise)</span></div>
+          <div class="spec-row"><span class="spec-key">Max Enthalpy</span><span class="spec-val">2 MJ/kg</span></div>
+        </div>
+        <div class="mach-badge">Mach 4 — 13</div>
+      </div>
+      <div class="facility-image">
+        <img src="./images/RT1.jpg" alt="Reddy Tunnel" onerror="this.style.display='none'" />
+        <div class="facility-image-placeholder" style="display:none">[ RT1.jpg ]</div>
+      </div>
+    </div>
+
+    <div class="facility-item">
+      <div class="facility-info">
+        <div class="facility-tag">Flow Reactor // FR</div>
+        <div class="facility-name">Flow Reactor</div>
+        <div class="facility-subtitle">Chemical Kinetics Laboratory</div>
+        <p style="color:var(--muted);font-size:1.05rem;margin-top:1.5rem;">Dedicated facility for studying chemical kinetics under controlled high-temperature conditions. Used for combustion chemistry, species measurements, and validation of kinetic mechanisms for supersonic combustion applications.</p>
+      </div>
+      <div class="facility-image">
+        <img src="./images/FR1.jpg" alt="Flow Reactor" onerror="this.style.display='none'" />
+        <div class="facility-image-placeholder" style="display:none">[ FR1.jpg ]</div>
+      </div>
+    </div>
+
+    <div class="facility-item">
+      <div class="facility-info">
+        <div class="facility-tag">Thin Film // SU</div>
+        <div class="facility-name">Sputtering Unit</div>
+        <div class="facility-subtitle">Thin Film Deposition</div>
+        <p style="color:var(--muted);font-size:1.05rem;margin-top:1.5rem;">Physical vapor deposition facility for the fabrication of thin film coatings and sensors. Used for developing heat flux gauges, thermal barrier coatings, and specialized sensors for hypersonic test environments.</p>
+      </div>
+      <div class="facility-image">
+        <img src="./images/SU1.jpg" alt="Sputtering Unit" onerror="this.style.display='none'" />
+        <div class="facility-image-placeholder" style="display:none">[ SU1.jpg ]</div>
+      </div>
+    </div>
+
+    <div class="facility-item">
+      <div class="facility-info">
+        <div class="facility-tag">Gas Supply // CO2</div>
+        <div class="facility-name">CO₂ Facility</div>
+        <div class="facility-subtitle">High-Pressure Gas Supply</div>
+        <p style="color:var(--muted);font-size:1.05rem;margin-top:1.5rem;">High-pressure CO₂ storage and delivery system supporting shock tunnel operations and CO₂ Brayton cycle research. Essential infrastructure for experiments involving supercritical CO₂ and planetary entry simulation.</p>
+      </div>
+      <div class="facility-image">
+        <img src="./images/CF1.jpg" alt="CO2 Facility" onerror="this.style.display='none'" />
+        <div class="facility-image-placeholder" style="display:none">[ CF1.jpg ]</div>
+      </div>
+    </div>
+
+  </div>
+  <footer>
+    <div class="footer-logo">LH<span style="color:var(--blue)">SR</span></div>
+    <ul class="footer-links">
+      <li><a href="#" onclick="showPage('home')">Home</a></li>
+      <li><a href="#" onclick="showPage('contact')">Contact</a></li>
+    </ul>
+    <div class="footer-copy">© 2025 LHSR, IISc Bengaluru</div>
+  </footer>
+</div>
+
+<div class="page" id="page-people">
+  <div class="page-header">
+    <div class="page-header-meta">// People</div>
+    <h1>The Team</h1>
+    <p>Faculty, researchers, students, and staff driving discoveries at the frontier of high-speed flow science.</p>
+  </div>
+  <div class="page-content">
+
+    <div class="people-section">
+      <div class="people-section-header">
+        <div class="people-section-title">Faculty</div>
+        <div class="people-count" id="faculty-count">00 members</div>
+      </div>
+      <div class="faculty-grid" id="faculty-grid">
+        </div>
+    </div>
+    
+    <div class="people-section">
+      <div class="people-section-header">
+        <div class="people-section-title">Associated Faculty</div>
+        <div class="people-count" id="assocFacultyCount">00 members</div>
+      </div>
+      <div class="faculty-grid" id="assocFacultyContainer"></div>
+    </div>
+    
+    <div class="people-section">
+      <div class="people-section-header">
+        <div class="people-section-title">Research Members</div>
+        <div class="people-count" id="research-count">00 members</div>
+      </div>
+      <div class="people-grid" id="research-members-grid"></div>
+    </div>
+
+    <div class="people-section">
+      <div class="people-section-header">
+        <div class="people-section-title">PhD Students</div>
+        <div class="people-count" id="phd-count">00 students</div>
+      </div>
+      <div class="people-grid" id="phd-grid"></div>
+    </div>
+
+    <div class="people-section">
+      <div class="people-section-header">
+        <div class="people-section-title">M.Tech Students</div>
+        <div class="people-count" id="mtech-count">00 students</div>
+      </div>
+      <div class="people-grid" id="mtech-grid"></div>
+    </div>
+
+    <div class="people-section">
+      <div class="people-section-header">
+        <div class="people-section-title">Staff</div>
+        <div class="people-count" id="staff-count">00 members</div>
+      </div>
+      <div class="people-grid" id="staff-grid"></div>
+    </div>
+
+    <div class="people-section">
+      <div class="people-section-header">
+        <div class="people-section-title">Alumni</div>
+        <div class="people-count" id="alumni-count">00 members</div>
+      </div>
+      <div class="people-grid" id="alumni-grid"></div>
+    </div>
+
+  </div>
+  <footer>
+    <div class="footer-logo">LH<span style="color:var(--blue)">SR</span></div>
+    <ul class="footer-links">
+      <li><a href="#" onclick="showPage('home')">Home</a></li>
+      <li><a href="#" onclick="showPage('contact')">Contact</a></li>
+    </ul>
+    <div class="footer-copy">© 2025 LHSR, IISc Bengaluru</div>
+  </footer>
+</div>
+
+<div class="page" id="page-publications">
+  <div class="page-header">
+    <div class="page-header-meta">// Publications</div>
+    <h1>Research Output</h1>
+    <p>Peer-reviewed publications, conference papers, and technical reports from the LHSR team.</p>
+  </div>
+  <div class="page-content">
+    <div class="pub-coming-soon">
+      <div class="big-num">∞</div>
+      <p style="margin-top:1.5rem;">Publication list coming soon</p>
+      <p style="margin-top:0.8rem;font-size:12px;opacity:0.5;">We are compiling our full list of publications. Check back soon or contact us directly.</p>
+      <a href="#" class="btn-primary" onclick="showPage('contact')" style="margin-top:2.5rem;display:inline-block;">Get In Touch</a>
+    </div>
+  </div>
+  <footer>
+    <div class="footer-logo">LH<span style="color:var(--blue)">SR</span></div>
+    <ul class="footer-links">
+      <li><a href="#" onclick="showPage('home')">Home</a></li>
+      <li><a href="#" onclick="showPage('contact')">Contact</a></li>
+    </ul>
+    <div class="footer-copy">© 2025 LHSR, IISc Bengaluru</div>
+  </footer>
+</div>
+
+<div class="page" id="page-gallery">
+  <div class="page-header">
+    <div class="page-header-meta">// Gallery</div>
+    <h1>Gallery</h1>
+    <p>Facilities, experiments, events, and the people behind the science.</p>
+  </div>
+  <div class="page-content">
+    <div class="gallery-tabs">
+      <button class="gallery-tab active" onclick="filterGallery('all', this)">All</button>
+      <button class="gallery-tab" onclick="filterGallery('facilities', this)">Facilities</button>
+      <button class="gallery-tab" onclick="filterGallery('lab', this)">Lab</button>
+    </div>
+    <div class="gallery-grid" id="gallery-grid"></div>
+  </div>
+  <footer>
+    <div class="footer-logo">LH<span style="color:var(--blue)">SR</span></div>
+    <ul class="footer-links">
+      <li><a href="#" onclick="showPage('home')">Home</a></li>
+      <li><a href="#" onclick="showPage('contact')">Contact</a></li>
+    </ul>
+    <div class="footer-copy">© 2025 LHSR, IISc Bengaluru</div>
+  </footer>
+</div>
+
+<div class="page" id="page-opportunities">
+  <div class="page-header">
+    <div class="page-header-meta">// Opportunities</div>
+    <h1>Join the Lab</h1>
+    <p>We are always looking for motivated researchers to join our team. Explore openings at all levels.</p>
+  </div>
+  <div class="page-content">
+    <div class="opp-grid">
+      <div class="opp-card">
+        <div class="opp-icon">🎓</div>
+        <div class="opp-title">PhD Positions</div>
+        <div class="opp-desc">We admit PhD students through the IISc admissions process. Students with backgrounds in aerospace, mechanical, chemical engineering, or physics are encouraged to apply. Positions available in hypersonic aerodynamics, chemical kinetics, and flow control.</div>
+      </div>
+      <div class="opp-card">
+        <div class="opp-icon">📐</div>
+        <div class="opp-title">M.Tech Research</div>
+        <div class="opp-desc">M.Tech (Research) positions available for students seeking to develop deep experimental and computational skills in high-speed flows. Projects span flow visualization, instrumentation, and data analysis.</div>
+      </div>
+      <div class="opp-card">
+        <div class="opp-icon">🔭</div>
+        <div class="opp-title">Post-Doctoral Fellows</div>
+        <div class="opp-desc">Post-doctoral opportunities are available for candidates with a PhD in related fields. We seek researchers with strong experimental skills, particularly in shock tunnel instrumentation, optical diagnostics, or CFD validation.</div>
+      </div>
+      <div class="opp-card">
+        <div class="opp-icon">🛠️</div>
+        <div class="opp-title">Project Associates</div>
+        <div class="opp-desc">Funded project associate positions are available periodically for candidates with B.Tech/M.Tech degrees. These roles involve hands-on experimental work and facility operations.</div>
+      </div>
+      <div class="opp-card">
+        <div class="opp-icon">🌍</div>
+        <div class="opp-title">Visiting Researchers</div>
+        <div class="opp-desc">We welcome visiting researchers, interns (from premier institutes), and international collaborators for short-term stays. Funding may be available through SERB, CSIR, or bilateral programs.</div>
+      </div>
+      <div class="opp-card">
+        <div class="opp-icon">🤝</div>
+        <div class="opp-title">Industry Collaboration</div>
+        <div class="opp-desc">LHSR collaborates with ISRO, DRDO, NAL, and aerospace industries for sponsored research and testing. Organizations seeking hypersonic testing or consulting are encouraged to reach out.</div>
+      </div>
+    </div>
+
+    <div class="requirements-box">
+      <div class="req-title">What We Look For</div>
+      <ul class="req-list">
+        <li>Strong fundamentals in fluid mechanics and thermodynamics</li>
+        <li>Background in aerospace, mechanical, chemical, or physics</li>
+        <li>Enthusiasm for experimental research and hands-on lab work</li>
+        <li>Comfort with data analysis, instrumentation, and uncertainty quantification</li>
+        <li>Ability to work in a collaborative, multidisciplinary environment</li>
+        <li>Programming skills (Python, MATLAB, or equivalent) are advantageous</li>
+      </ul>
+    </div>
+
+    <div style="text-align:center; padding: 3rem 0;">
+      <p style="color:var(--muted);margin-bottom:1.5rem;font-family:'Space Mono',monospace;font-size:13px;letter-spacing:0.15em;">READY TO APPLY?</p>
+      <a href="#" class="btn-primary" onclick="showPage('contact')">Contact Us</a>
+    </div>
+  </div>
+  <footer>
+    <div class="footer-logo">LH<span style="color:var(--blue)">SR</span></div>
+    <ul class="footer-links">
+      <li><a href="#" onclick="showPage('home')">Home</a></li>
+      <li><a href="#" onclick="showPage('contact')">Contact</a></li>
+    </ul>
+    <div class="footer-copy">© 2025 LHSR, IISc Bengaluru</div>
+  </footer>
+</div>
+
+<div class="page" id="page-contact">
+  <div class="page-header">
+    <div class="page-header-meta">// Contact</div>
+    <h1>Get In Touch</h1>
+    <p>Reach out for collaborations, admissions enquiries, or facility access.</p>
+  </div>
+  <div class="page-content">
+    <div class="contact-grid">
+      <div class="contact-info">
+        <div class="contact-item">
+          <div class="contact-item-label">Location</div>
+          <div class="contact-item-val">
+            Laboratory for Hypersonic and Shock Wave Research<br>
+            Department of Aerospace Engineering<br>
+            Indian Institute of Science<br>
+            Bengaluru – 560012, Karnataka, India
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-label">Email</div>
+            <div class="contact-item-val">
+              <a href="mailto:jaggie@iisc.ac.in">Prof. Gopalan Jagadeesh ↗</a><br>
+              <a href="mailto:srisharao@iisc.ac.in">Prof. Srisha Rao M V ↗</a>
+            </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-label">Department</div>
+          <div class="contact-item-val">
+            <a href="https://aero.iisc.ac.in" target="_blank">aero.iisc.ac.in ↗</a>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-label">How to reach us</div>
+          <div class="contact-item-val" style="color:var(--muted);font-size:1.05rem;">
+            IISc is located in central Bengaluru. The Department of Aerospace Engineering is in the main campus. Visitors should contact us in advance to arrange campus access.
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-form-wrap">
+        <div class="req-title" style="margin-bottom:2.5rem;">Send a Message</div>
+        <div class="form-group">
+          <label class="form-label">Your Name</label>
+          <input class="form-input" type="text" placeholder="Full name" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <input class="form-input" type="email" placeholder="your@email.com" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Subject</label>
+          <input class="form-input" type="text" placeholder="e.g. PhD Admission / Collaboration / Facility Access" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Message</label>
+          <textarea class="form-textarea" placeholder="Describe your enquiry in detail..."></textarea>
+        </div>
+        <button class="btn-primary" style="width:100%;" onclick="alert('Thank you! Your message has been noted. Please also email us directly for a prompt response.')">Send Message</button>
+      </div>
+    </div>
+
+    <div class="map-section">
+      <div class="map-wrap">
+        <div class="contact-item-label" style="margin-bottom:1.5rem;">Location on Map</div>
+        <iframe
+          class="map-iframe"
+          src="https://maps.google.com/maps?q=Department+of+Aerospace+Engineering,+Indian+Institute+of+Science,+Bengaluru&output=embed"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
+    </div>
+
+  </div>
+  <footer>
+    <div class="footer-logo">LH<span style="color:var(--blue)">SR</span></div>
+    <ul class="footer-links">
+      <li><a href="#" onclick="showPage('home')">Home</a></li>
+      <li><a href="#" onclick="showPage('people')">People</a></li>
+    </ul>
+    <div class="footer-copy">© 2025 LHSR, IISc Bengaluru</div>
+  </footer>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+
+<script>
+// Force the browser to always load the freshest CSV file (fixes caching)
+const cacheBuster = new Date().getTime();
+const csvUrl = `LHSR_Website_Consolidated.csv?v=${cacheBuster}`;
+
+fetch(csvUrl)
+  .then(res => {
+    if (!res.ok) throw new Error("Could not load CSV — HTTP " + res.status);
+    return res.text();
+  })
+  .then(csv => {
+    const data = Papa.parse(csv, {
+      header: true,
+      skipEmptyLines: true,
+      // Strip BOM and whitespace from every header so column names always match
+      transformHeader: h => h.trim().replace(/^\uFEFF/, '')
+    }).data;
+
+    // Grab all grid containers
+    const facultyGrid   = document.getElementById('faculty-grid');
+    const associatedfacultyGrid   = document.getElementById('associatedfaculty-grid');
+    const phdGrid       = document.getElementById('phd-grid');
+    const mtechGrid     = document.getElementById('mtech-grid');
+    const researchGrid  = document.getElementById('research-members-grid');
+    const staffGrid     = document.getElementById('staff-grid');
+    const alumniGrid    = document.getElementById('alumni-grid');
+
+    // Clear grids before populating to prevent duplicates on re-load
+    if(facultyGrid)  facultyGrid.innerHTML  = '';
+    if(phdGrid)      phdGrid.innerHTML      = '';
+    if(mtechGrid)    mtechGrid.innerHTML    = '';
+    if(researchGrid) researchGrid.innerHTML = '';
+    if(staffGrid)    staffGrid.innerHTML    = '';
+    if(alumniGrid)   alumniGrid.innerHTML   = '';
+
+    let counts = { faculty: 0,associatedfaculty: 0, phd: 0, mtech: 0, research: 0, staff: 0, alumni: 0 };
+
+    data.forEach(person => {
+      if (!person.Name || !person.Name.trim()) return; // Skip empty rows
+
+      const card = document.createElement('div');
+
+      const imgId       = person.ID ? person.ID.trim() : '';
+      // FIX: correct column names are LinkedIn_Profile and Research_Field
+      const linkedInUrl = person.LinkedIn_Profile
+        ? `<a class="people-card-linkedin" href="${person.LinkedIn_Profile}" target="_blank">LinkedIn ↗</a>`
+        : '';
+      const role     = (person.Role     || '').toLowerCase();
+      const category = (person.Category || '').toLowerCase();
+
+      // Faculty uses a larger card style
+      if (category.includes('faculty')) {
+        card.className = 'faculty-card';
+        const initial = person.Name.charAt(0).toUpperCase();
+        card.innerHTML = `
+          <div class="faculty-photo-wrap" id="fw-${imgId}">
+            <img src="./images/${imgId}.jpg"
+                 alt="${person.Name}"
+                 onerror="if(!this.dataset.retried){ this.dataset.retried=true; this.src='./images/${imgId}.jpeg'; } else { const w=this.parentNode; w.classList.add('no-image'); this.remove(); w.innerHTML+='<div class=\\'faculty-letter\\'>${initial}</div>'; }">
+            <div class="faculty-card-base">
+              <div class="faculty-name">${person.Name}</div>
+              <div class="faculty-role">${person.Role || ''}</div>
+            </div>
+            <div class="faculty-card-hover">
+              <div class="faculty-name">${person.Name}</div>
+              <div class="faculty-role">${person.Role || ''}</div>
+              <p class="faculty-research">${person.Research_Field || ''}</p>
+            </div>
+          </div>
+        `;
+        if(facultyGrid) facultyGrid.appendChild(card);
+        counts.faculty++;
+      }
+      else {
+        // Standard card for everyone else
+        card.className = 'people-card';
+        const initial = person.Name.charAt(0).toUpperCase();
+        const researchHtml = person.Research_Field
+          ? `<div class="people-card-research">${person.Research_Field}</div>`
+          : '';
+        const linkedInHtml = person.LinkedIn_Profile
+          ? `<a class="people-card-linkedin" href="${person.LinkedIn_Profile}" target="_blank">LinkedIn ↗</a>`
+          : '';
+
+        card.innerHTML = `
+          <div class="people-card-photo-wrap">
+            <img src="./images/${imgId}.jpg"
+                 alt="${person.Name}"
+                 onerror="if(!this.dataset.retried){ this.dataset.retried=true; this.src='./images/${imgId}.jpeg'; } else { const w=this.parentNode; w.classList.add('no-image'); this.remove(); w.innerHTML+='<div class=\\'people-card-letter\\'>${initial}</div>'; }">
+            <div class="people-card-base">
+              <div class="people-card-name">${person.Name}</div>
+              <div class="people-card-role">${person.Role || ''}</div>
+            </div>
+            <div class="people-card-hover">
+              <div class="people-card-name">${person.Name}</div>
+              <div class="people-card-role">${person.Role || ''}</div>
+              ${researchHtml}
+              ${linkedInHtml}
+            </div>
+          </div>
+        `;
+
+        // 1. Check Alumni FIRST so past students don't fall into student grids
+        if (category.includes('alumni')) {
+          if(alumniGrid) alumniGrid.appendChild(card);
+          counts.alumni++;
+        }
+        // 2. Current students — split by role
+        else if (role.includes('phd')) {
+          if(phdGrid) phdGrid.appendChild(card);
+          counts.phd++;
+        }
+        else if (role.includes('mtech') || role.includes('m.tech') || role.includes('m tech') || role.includes('m. tech')) {
+          if(mtechGrid) mtechGrid.appendChild(card);
+          counts.mtech++;
+        }
+        // 3. Staff and research members
+        else if (category.includes('research')) {
+          if(researchGrid) researchGrid.appendChild(card);
+          counts.research++;
+        }
+        else if (category.includes('staff')) {
+          if(staffGrid) staffGrid.appendChild(card);
+          counts.staff++;
+        }
+      }
+    });
+
+    // Update the count badges in the UI
+    if(document.getElementById('faculty-count'))  document.getElementById('faculty-count').textContent  = String(counts.faculty).padStart(2,'0')  + " members";
+    if(document.getElementById('phd-count'))      document.getElementById('phd-count').textContent      = String(counts.phd).padStart(2,'0')      + " students";
+    if(document.getElementById('mtech-count'))    document.getElementById('mtech-count').textContent    = String(counts.mtech).padStart(2,'0')    + " students";
+    if(document.getElementById('research-count')) document.getElementById('research-count').textContent = String(counts.research).padStart(2,'0') + " members";
+    if(document.getElementById('staff-count'))    document.getElementById('staff-count').textContent    = String(counts.staff).padStart(2,'0')    + " members";
+    if(document.getElementById('alumni-count'))   document.getElementById('alumni-count').textContent   = String(counts.alumni).padStart(2,'0')   + " members";
+  })
+  .catch(err => {
+    console.error("Error loading/parsing CSV:", err);
+    // Show a visible warning on the People page so the problem is obvious
+    const grids = ['faculty-grid','phd-grid','mtech-grid','research-members-grid','staff-grid','alumni-grid'];
+    grids.forEach(id => {
+      const el = document.getElementById(id);
+      if(el) el.innerHTML = `<div style="padding:2rem;font-family:Space Mono,monospace;font-size:12px;color:var(--muted);letter-spacing:0.1em;">
+        Place LHSR_Website_Consolidated.csv in the same folder and serve via a local web server (e.g. python3 -m http.server).
+      </div>`;
+    });
+  });
+
+
+// ── Gallery Code ──
+const galleryItems = [
+  { src:'./images/L1.jpg', label:'Lab Building', cat:'lab' },
+  { src:'./images/L2.jpg', label:'Lab Interior', cat:'lab' },
+  { src:'./images/HST1.jpg', label:'Hypersonic Shock Tunnel 1', cat:'facilities' },
+  { src:'./images/HST2.jpg', label:'Hypersonic Shock Tunnel 2', cat:'facilities' },
+  { src:'./images/HST3.jpg', label:'Hypersonic Shock Tunnel 3', cat:'facilities' },
+  { src:'./images/HST4.jpg', label:'Hypersonic Shock Tunnel 4', cat:'facilities' },
+  { src:'./images/HST5.jpg', label:'Hypersonic Shock Tunnel 5', cat:'facilities' },
+  { src:'./images/CST1.jpg', label:'Chemical Shock Tunnel 1', cat:'facilities' },
+  { src:'./images/CST3.jpg', label:'Chemical Shock Tunnel 3', cat:'facilities' },
+  { src:'./images/VST1.jpg', label:'Vertical Shock Tube', cat:'facilities' },
+  { src:'./images/RT1.jpg', label:'Reddy Tunnel', cat:'facilities' },
+  { src:'./images/SU1.jpg', label:'Sputtering Unit', cat:'facilities' },
+  { src:'./images/FR1.jpg', label:'Flow Reactor', cat:'facilities' },
+  { src:'./images/CF1.jpg', label:'CO₂ Facility 1', cat:'facilities' },
+  { src:'./images/CF2.jpg', label:'CO₂ Facility 2', cat:'facilities' },
+];
+
+function buildGallery(filter = 'all') {
+  const items = filter === 'all' ? galleryItems : galleryItems.filter(g => g.cat === filter);
+  const grid = document.getElementById('gallery-grid');
+  if(grid) {
+      grid.innerHTML = items.map(g => `
+        <div class="gallery-item">
+          <img src="${g.src}" alt="${g.label}" onerror="this.parentNode.style.background='var(--navy3)';this.style.display='none'" loading="lazy" />
+          <div class="gallery-item-overlay">
+            <span class="gallery-item-label">${g.label}</span>
+          </div>
+        </div>`).join('');
+  }
+}
+
+function filterGallery(cat, btn) {
+  document.querySelectorAll('.gallery-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  buildGallery(cat);
+}
+
+// ── Navigation Code ──
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  document.querySelectorAll('.nav-links a').forEach(a => {
+    a.classList.toggle('active', a.getAttribute('data-page') === name);
+  });
+  window.scrollTo(0, 0);
+  document.getElementById('navLinks').classList.remove('open');
+  if (name === 'gallery') buildGallery('all');
+}
+
+function toggleMenu() {
+  const nav = document.getElementById('navLinks');
+  nav.classList.toggle('open');
+}
+
+// Auto-highlight active nav link on load
+document.addEventListener('DOMContentLoaded', function() {
+  const homeLink = document.querySelector('.nav-links a[data-page="home"]');
+  // No home link in nav, but highlight none by default — home is the logo
+  buildGallery('all');
+});
+</script>
+</body>
+</html>
